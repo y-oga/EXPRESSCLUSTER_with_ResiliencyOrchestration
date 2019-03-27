@@ -46,7 +46,7 @@ This guide provides how to integrate Resiliency Orchestration (RO) 7.3 with EXPR
 		                                          |  |                          |
 		                                          |  | RAM   :  4GB             |
 		 +-----------------------------------+    |  | Disk 0: 40GB OS          |
-		 | Resiliention Orchestration Server |    |  |      C: local partition  |
+		 | Resiliency Orchestration Server   |    |  |      C: local partition  |
 		 | - CentOS 7.4                      |    |  | Disk 1: 30GB mirror disk |
 		 | - Resiliency Orchestration 7.3    |    |  |      E: cluster partition|
 		 |                                   |    |  |      F: mirror partition |
