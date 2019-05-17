@@ -30,7 +30,7 @@ This guide provides how to integrate Resiliency Orchestration (RO) 7.3 with EXPR
   - Resiliency Orchestration 7.3.45171
 - ECX servers
   - 2 servers
-    - Productive server and Remote server
+    - Production server and Remote server
   - Windows Server 2016 Datacenter
   - EXPRESSCLUSTER X4.0 for Windows
 
@@ -38,15 +38,15 @@ This guide provides how to integrate Resiliency Orchestration (RO) 7.3 with EXPR
 		
 		                                         <Internet>
 		                                          |
-		                                          |         Productive Site
+		                                          |         Production Site
 		                                          |  +--------------------------+
-		                                          +--| Productive Server        |
+		                                          +--| Production Server        |
 		                                          |  | - Windows Server 2016    |
 		                                          |  | - EXPRESSCLUSTER X 4.0   |
 		                                          |  |                          |
 		                                          |  | RAM   :  4GB             |
 		 +-----------------------------------+    |  | Disk 0: 40GB OS          |
-		 | Resiliention Orchestration Server |    |  |      C: local partition  |
+		 | Resiliency Orchestration Server   |    |  |      C: local partition  |
 		 | - CentOS 7.4                      |    |  | Disk 1: 30GB mirror disk |
 		 | - Resiliency Orchestration 7.3    |    |  |      E: cluster partition|
 		 |                                   |    |  |      F: mirror partition |
@@ -103,7 +103,7 @@ This guide provides how to integrate Resiliency Orchestration (RO) 7.3 with EXPR
     - Failover Group: failover
         - fip: floating IP resource
         - md : mirror disk resource
-4. Start a group on Productive server
+4. Start a group on Production server
 
 
 ### Install Resiliency Orchestration
@@ -236,11 +236,11 @@ You can edit an action by double-clicking the action icon.
 
 2. **Failover**
 
-    - 1st action: Check status of a Productive server
+    - 1st action: Check status of a Production server
         - **Run-time settings**
             - Input **Name** and **Description**
         - **Action Properties**
-            - Select a Productive server as **Server/Machine Name**
+            - Select a Production server as **Server/Machine Name**
             - Select **Script** as **Type Of Custom Action**
             - Input the path of **checkstatus.bat** as **Command/Script to be executed with absolute path**
     - 2nd action: Check status of a Remote server
@@ -254,7 +254,7 @@ You can edit an action by double-clicking the action icon.
         - **Run-time settings**
             - Input **Name** and **Description**
         - **Action Properties**
-            - Select a Productive server as **Server/Machine Name**
+            - Select a Production server as **Server/Machine Name**
             - Select **Script** as **Type Of Custom Action**
             - Input the path of **movegrp.bat** as **Command/Script to be executed with absolute path**
     - Click **Export** to export the workflow xml data
@@ -271,11 +271,11 @@ You can edit an action by double-clicking the action icon.
             - Select a Remote server as **Server/Machine Name**
             - Select **Script** as **Type Of Custom Action**
             - Input the path of **checkstatus.bat** as **Command/Script to be executed with absolute path**
-    - 2nd action: Check status of a Productive server
+    - 2nd action: Check status of a Production server
         - **Run-time settings**
             - Input **Name** and **Description**
         - **Action Properties**
-            - Select a Productive server as **Server/Machine Name**
+            - Select a Production server as **Server/Machine Name**
             - Select **Script** as **Type Of Custom Action**
             - Input the path of **checkstatus.bat** as **Command/Script to be executed with absolute path**
     - 3rd action: Group failback
