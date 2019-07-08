@@ -32,6 +32,7 @@ source "$libPath/PanaceOperatingSystemTCL.lib"
 ### Set floating IP address to connect to EXPRESSCLUSTER (ECX)
 set fip "192.168.137.5"
 set port "29003"
+set mdname "md1"
 #############################################################
 
 
@@ -54,7 +55,7 @@ if {$recordExist == 0} {
 }
 
 ### Get cluster information from ECX WebManager
-set curlOut [exec curl -s http://$fip:$port/GetMirrorInfo.js?MirrorDiskName=md1]
+set curlOut [exec curl -s http://$fip:$port/GetMirrorInfo.js?MirrorDiskName=$mdname]
 set file_ID [open $curlOutPath w] 
 puts $file_ID "$curlOut"
 close $file_ID
