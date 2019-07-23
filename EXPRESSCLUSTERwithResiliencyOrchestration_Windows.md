@@ -122,16 +122,16 @@ Please refer to page 55 in `IBM Resiliency Orchestration 7.3 Installation Guide.
 2. Create a folder `/opt/panaces/scripts/ECX/RecGroup` on RO server
 3. Change permission and owner of folders
   ```
-  chown panacesuser:panacesusergroup /opt/panaces/scripts/ECX
-  chown panacesuser:panacesusergroup /opt/panaces/scripts/ECX/RecGroup
-  chmod 775 /opt/panaces/scripts/ECX
-  chmod 775 /opt/panaces/scripts/ECX/RecGroup
+  sudo chown panacesuser:panacesusergroup /opt/panaces/scripts/ECX
+  sudo chown panacesuser:panacesusergroup /opt/panaces/scripts/ECX/RecGroup
+  sudo chmod 775 /opt/panaces/scripts/ECX
+  sudo chmod 775 /opt/panaces/scripts/ECX/RecGroup
   ```
 4. Copy **ECX_RepInfo.tcl** to `/opt/panaces/scripts/ECX/RecGroup` on RO server
 5. Change permission and owner of **ECX_RepInfo.tcl**
   ```
-  sudo chown panacesuser:panacesusergroup ECX_RepInfo.tcl
-  sudo chmod 776 /opt/panaces/scripts/ECX/ECX_RepInfo.tcl
+  sudo chown panacesuser:panacesusergroup /opt/panaces/scripts/ECX/RecGroup/ECX_RepInfo.tcl
+  sudo chmod 776 /opt/panaces/scripts/ECX/RecGroup/ECX_RepInfo.tcl
   ```
 6. Edit **ECX_RepInfo.tcl**
   - **fip**: Floating IP address to connect to ECX
