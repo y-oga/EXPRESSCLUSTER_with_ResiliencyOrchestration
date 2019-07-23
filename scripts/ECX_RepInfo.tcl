@@ -28,11 +28,18 @@ source "$libPath/PanaceOperatingSystemTCL.lib"
 
 
 
-############## PLEASE EDIT fip AND port #####################
+####################### PLEASE EDIT #########################
 ### Set floating IP address to connect to EXPRESSCLUSTER (ECX)
-set fip "192.168.137.5"
+set fip "192.168.137.30"
+
+### Set port number to connect to ECX WebManager
 set port "29003"
-set mdname "md1"
+
+### Set mirror disk name of ECX
+set mdName "md1"
+
+### Set recovery group name of IBM Resiliency Orchestration
+set recoveryGroup "test"
 #############################################################
 
 
@@ -41,10 +48,10 @@ set mdname "md1"
 
 
 ### Set intermediate file
-set curlOutPath "scripts/ECX/curlOut.txt"
-set commandOutPath "scripts/ECX/commandOut.txt"
+set curlOutPath "scripts/ECX/$recoveryName/curlOut.txt"
+set commandOutPath "scripts/ECX/$recoveryName/commandOut.txt"
 ### Set MirrorBreakTime record file
-set breakTimeRecordPath "scripts/ECX/breakTimeRecord.txt"
+set breakTimeRecordPath "scripts/ECX/$recoveryName/breakTimeRecord.txt"
 
 ### Create breakTimeRecord.txt if it does not exist
 set recordExist [file exists $breakTimeRecordPath]
@@ -55,7 +62,7 @@ if {$recordExist == 0} {
 }
 
 ### Get cluster information from ECX WebManager
-set curlOut [exec curl -s http://$fip:$port/GetMirrorInfo.js?MirrorDiskName=$mdname]
+set curlOut [exec curl -s http://$fip:$port/GetMirrorInfo.js?MirrorDiskName=$mdName]
 set file_ID [open $curlOutPath w] 
 puts $file_ID "$curlOut"
 close $file_ID
@@ -107,9 +114,15 @@ close $file_ID
 
 ### Extract DiffPercent of a primary server
 set tmpDiffPercentPr [exec awk {-F["]} {{print $2}} $commandOutPath]
+if {$tmpDiffPercentPr == "--"} {
+    set tmpDiffPercentPr "0"
+}
 set diffPercentPr [format "%.1f" $tmpDiffPercentPr]
 ### Extract DiffPercent of a secondary server
 set tmpDiffPercentDr [exec awk {-F["]} {{print $4}} $commandOutPath]
+if {$tmpDiffPercentDr == "--"} {
+    set tmpDiffPercentDr "0"
+}
 set diffPercentDr [format "%.1f" $tmpDiffPercentDr]
 
 ### Extract NMPSize from cluster information
@@ -207,12 +220,6 @@ if {$diskPr == "2" || $diskDr == "2"} {
         set timeDr "$breakTimeRecord"
     }
     set dataLag [expr $diffPercentPr * $nmpSizePr * 0.01]
-
-    ### debug ###
-    set file_ID [open $commandOutPath w]
-    puts $file_ID "$diffPercentPr $diffPercentDr $nmpSizePr $nmpSizeDr $dataLag"
-    close $file_ID
-    #############
 
     set file_ID [open $breakTimeRecordPath w]
     puts $file_ID "$timeDr"
