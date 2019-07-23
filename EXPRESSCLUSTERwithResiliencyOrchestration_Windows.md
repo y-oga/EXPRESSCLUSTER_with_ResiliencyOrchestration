@@ -86,9 +86,9 @@ This guide provides how to integrate Resiliency Orchestration (RO) 7.3 with EXPR
 
 - 1 Application Group that includes 1 recovery group.
     - AppGroup: Application Groups
-    - ECX     : Recovery Groups
+    - RecGroup: Recovery Groups
 - RO folder path             : `/opt/panaces/`
-- Scripts folder path for ECX: `/opt/panaces/scripts/ECX/`
+- Scripts folder path for ECX: `/opt/panaces/scripts/ECX/RecGroup`
 
 
 ## System setup
@@ -119,12 +119,26 @@ Please refer to page 55 in `IBM Resiliency Orchestration 7.3 Installation Guide.
 ### Copy the custom script to each servers
 
 1. Create a folder `/opt/panaces/scripts/ECX` on RO server
-2. Copy **ECX_RepInfo.tcl** to `/opt/panaces/scripts/ECX` on RO server
-3. Change permission of **ECX_RepInfo.tcl** to 777
-4. Edit **fip** and **port** in **ECX_RepInfo.tcl**
-	- **fip** is the floating IP address in ECX cluster
-	- **port** is the port to communicate with ClusterManager
-5. Copy **checkstatus.bat** and **movegrp.bat** to ECX servers
+2. Create a folder `/opt/panaces/scripts/ECX/RecGroup` on RO server
+3. Change permission and owner of folders
+  ```
+  chown panacesuser:panacesusergroup /opt/panaces/scripts/ECX
+  chown panacesuser:panacesusergroup /opt/panaces/scripts/ECX/RecGroup
+  chmod 775 /opt/panaces/scripts/ECX
+  chmod 775 /opt/panaces/scripts/ECX/RecGroup
+  ```
+4. Copy **ECX_RepInfo.tcl** to `/opt/panaces/scripts/ECX/RecGroup` on RO server
+5. Change permission and owner of **ECX_RepInfo.tcl**
+  ```
+  sudo chown panacesuser:panacesusergroup ECX_RepInfo.tcl
+  sudo chmod 776 /opt/panaces/scripts/ECX/ECX_RepInfo.tcl
+  ```
+6. Edit **ECX_RepInfo.tcl**
+  - **fip**: Floating IP address to connect to ECX
+  - **port**: Port number to connect to ECX WebManager
+  - **mdName**: Mirror disk name of ECX
+  - **recoveryGroup**: Recovery group name of IBM RO
+7. Copy **checkstatus.bat** and **movegrp.bat** to ECX servers
     - You can copy scripts to anywhere in ECX servers
 
 
