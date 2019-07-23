@@ -1,8 +1,8 @@
-# IBM Resiliency Orchestration 7.3 Quick Start Guide for EXPRESSCLUSTER X 4.0 (Windows Data mirror)
+# IBM Resiliency Orchestration 7.3 Quick Start Guide for EXPRESSCLUSTER X (Windows Data mirror)
 
 ## About This Guide
 
-This guide provides how to integrate Resiliency Orchestration (RO) 7.3 with EXPRESSCLUSTER X 4.0 (ECX) using mirror disks with 2 nodes. The guide assumes its readers to have EXPRESSCLUSTER X basic knowledge and setup skills.
+This guide provides how to integrate Resiliency Orchestration (RO) 7.3 with EXPRESSCLUSTER X (ECX) using mirror disks with 2 nodes. The guide assumes its readers to have EXPRESSCLUSTER X basic knowledge and setup skills.
 
 
 ## System Overview
@@ -16,7 +16,7 @@ This guide provides how to integrate Resiliency Orchestration (RO) 7.3 with EXPR
     - ECX servers (Windows)
       - Having mirror disk
         - At least 2 partitions are required on each mirror disk.
-          - Cluster Partition that has volume size of 1024MB.
+          - Cluster Partition that has volume size of 1024MB (X 4.0, 4.1) or 17MB (X 3.3).
           - Data Partition that has volume size depending on Database sizing.
   - 3 servers are needed to be IP reachable one another.
 
@@ -32,7 +32,7 @@ This guide provides how to integrate Resiliency Orchestration (RO) 7.3 with EXPR
   - 2 servers
     - Production server and Remote server
   - Windows Server 2016 Datacenter
-  - EXPRESSCLUSTER X4.0 for Windows
+  - EXPRESSCLUSTER X for Windows
 
 		Sample configuration
 		
@@ -42,7 +42,7 @@ This guide provides how to integrate Resiliency Orchestration (RO) 7.3 with EXPR
 		                                          |  +--------------------------+
 		                                          +--| Production Server        |
 		                                          |  | - Windows Server 2016    |
-		                                          |  | - EXPRESSCLUSTER X 4.0   |
+		                                          |  | - EXPRESSCLUSTER X       |
 		                                          |  |                          |
 		                                          |  | RAM   :  4GB             |
 		 +-----------------------------------+    |  | Disk 0: 40GB OS          |
@@ -57,7 +57,7 @@ This guide provides how to integrate Resiliency Orchestration (RO) 7.3 with EXPR
 		 +-----------------------------------+    |  +--------------------------+
 		                                          +--| Remote Server            |
 		                                          |  | - Windows Server 2016    |
-		                                          |  | - EXPRESSCLUSTER X 4.0   |
+		                                          |  | - EXPRESSCLUSTER X       |
 		                                          |  |                          |
 		                                          |  | RAM   :  4GB             |
 		                                          |  | Disk 0: 40GB OS          |
@@ -97,8 +97,8 @@ This guide provides how to integrate Resiliency Orchestration (RO) 7.3 with EXPR
 
 1. Install EXPRESSCLUSTER X
 2. Register ECX licenses
-    - EXPRESSCLUSTER X 4.0 for Windows
-    - EXPRESSCLUSTER X Replicator 4.0 for Windows
+    - EXPRESSCLUSTER X for Windows
+    - EXPRESSCLUSTER X Replicator for Windows
 3. Create a cluster and a failover group
     - Failover Group: failover
         - fip: floating IP resource
