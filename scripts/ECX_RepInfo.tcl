@@ -48,10 +48,10 @@ set recoveryGroup "test"
 
 
 ### Set intermediate file
-set curlOutPath "scripts/ECX/$recoveryName/curlOut.txt"
-set commandOutPath "scripts/ECX/$recoveryName/commandOut.txt"
+set curlOutPath "scripts/ECX/$recoveryGroup/curlOut.txt"
+set commandOutPath "scripts/ECX/$recoveryGroup/commandOut.txt"
 ### Set MirrorBreakTime record file
-set breakTimeRecordPath "scripts/ECX/$recoveryName/breakTimeRecord.txt"
+set breakTimeRecordPath "scripts/ECX/$recoveryGroup/breakTimeRecord.txt"
 
 ### Create breakTimeRecord.txt if it does not exist
 set recordExist [file exists $breakTimeRecordPath]
