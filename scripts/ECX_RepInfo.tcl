@@ -277,8 +277,10 @@ for {set i 0} {$i < $mdNum} {incr i} {
         puts $file_ID "$timeDr"
         close $file_ID
     }
-
-    set sumDataLag [expr $sumDataLag + $dataLag]
+    
+    if {$diskPr != "8" && $diskDr != "8"} {
+        set sumDataLag [expr $sumDataLag + $dataLag]
+    }
     
     if {$mostPreviousTimeDr == ""} {
         set mostPreviousTimeDr "$timeDr"
