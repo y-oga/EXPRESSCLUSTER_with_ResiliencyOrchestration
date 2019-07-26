@@ -60,6 +60,9 @@ set sumDataLag 0
 ### Declare most previous mirror break time
 set mostPreviousTimeDr ""
 
+### Declare data lag unit
+set dataUnit "MB"
+
 ### Start processing
 for {set i 0} {$i < $mdNum} {incr i} {
     
@@ -290,7 +293,7 @@ for {set i 0} {$i < $mdNum} {incr i} {
             set sumDataLag [expr $sumDataLag + $dataLag]
         }
     } else {
-        set sumDataLag "Unknown"
+        set dataUnit "Unknown"
     }
     
     if {$mostPreviousTimeDr == ""} {
@@ -306,13 +309,17 @@ for {set i 0} {$i < $mdNum} {incr i} {
     }
 }
 
+if {$dataUnit == "N/A"} {
+    append msg $msg " Pending Data size is unknown."
+}
+
 $PANACES_CLI_RETVAL setArgs "REPLICATION_DETAILS_EXIT_STATUS" "0"
 $PANACES_CLI_RETVAL setArgs "REPLICATION_DETAILS_OUTPUT" "$msg"
 $PANACES_CLI_RETVAL setArgs "REPLICATION_DETAILS_OUTPUT_TYPE" "Text"
 
 ### Set remaining data lag
 $PANACES_CLI_RETVAL setArgs "REPLICATION_DETAILS_DATALAG" "$sumDataLag"
-$PANACES_CLI_RETVAL setArgs "REPLICATION_DETAILS_DATALAG_UNIT" "MB"
+$PANACES_CLI_RETVAL setArgs "REPLICATION_DETAILS_DATALAG_UNIT" "$dataUnit"
 
 ### Send MirrorBreakTime of both servers to RO server
 ### RPO = PR_TIMESTAMP - DR_TIMESTAMP
