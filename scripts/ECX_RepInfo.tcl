@@ -293,7 +293,7 @@ for {set i 0} {$i < $mdNum} {incr i} {
             set sumDataLag [expr $sumDataLag + $dataLag]
         }
     } else {
-        set dataUnit "Unknown"
+        set dataUnit "N/A"
     }
     
     if {$mostPreviousTimeDr == ""} {
