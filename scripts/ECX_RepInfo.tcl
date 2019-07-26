@@ -152,9 +152,16 @@ for {set i 0} {$i < $mdNum} {incr i} {
 
 ### Extract NMPSize of a primary server
     set tmpNmpSizePr [exec awk {-F["]} {{print $2}} $commandOutPath]
+    if {$tmpNmpSizePr == "--"} {
+        set tmpNmpSizePr "0"
+    }
     set nmpSizePr [format "%.1f" $tmpNmpSizePr]
+
 ### Extract NMPSize of a secondary server
     set tmpNmpSizeDr [exec awk {-F["]} {{print $4}} $commandOutPath]
+    if {$tmpNmpSizeDr == "--"} {
+        set tmpNmpSizeDr "0"
+    }
     set nmpSizeDr [format "%.1f" $tmpNmpSizeDr]
 
 ### Delete an intermediate file
@@ -277,9 +284,13 @@ for {set i 0} {$i < $mdNum} {incr i} {
         puts $file_ID "$timeDr"
         close $file_ID
     }
-    
+
     if {$diskPr != "8" && $diskDr != "8"} {
-        set sumDataLag [expr $sumDataLag + $dataLag]
+        if {$sumDataLag != "Unknown"} {
+            set sumDataLag [expr $sumDataLag + $dataLag]
+        }
+    } else {
+        set sumDataLag "Unknown"
     }
     
     if {$mostPreviousTimeDr == ""} {
