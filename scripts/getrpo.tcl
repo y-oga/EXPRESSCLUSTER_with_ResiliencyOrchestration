@@ -195,7 +195,7 @@ for {set i 0} {$i < $mdNum} {incr i} {
 
     if {$diskPr == "2" || $diskDr == "2"} {
         set msg "Mirror disks on both servers are under Mirror Recovery. Please wait until Mirror Recovery is completed."
-        set dataLag "Unknown"        
+        set dataLag "Unknown"
 
         set timePr "$currentTime"
         set file_ID [open $breakTimeRecordPath r]
@@ -204,7 +204,7 @@ for {set i 0} {$i < $mdNum} {incr i} {
         set timeDr "$breakTimeRecord"
     } elseif {$diskPr == "8"} {
         set msg "Primary server is not running."
-        set dataLag [expr $diffPercentDr * $nmpSizeDr * 0.01]        
+        set dataLag [expr $diffPercentDr * $nmpSizeDr * 0.01]
 
         set timePr "$currentTime" 
         set file_ID [open $breakTimeRecordPath r]
@@ -213,7 +213,7 @@ for {set i 0} {$i < $mdNum} {incr i} {
         set timeDr "$breakTimeRecord"
     } elseif {$diskDr == "8"} {
         set msg "Secondary server is not running."
-        set dataLag [expr $diffPercentPr * $nmpSizePr * 0.01]  
+        set dataLag [expr $diffPercentPr * $nmpSizePr * 0.01]
 
         set timePr "$currentTime" 
         set file_ID [open $breakTimeRecordPath r]
@@ -291,23 +291,22 @@ for {set i 0} {$i < $mdNum} {incr i} {
         close $file_ID
     }
     
-
     if {$sumDataLag == "Unknown"} {
         set dataUnit "N/A"
     } else {
         set sumDataLag [expr $sumDataLag + $dataLag]
     }
-
+    
     if {$mostPreviousTimeDr == ""} {
         set mostPreviousTimeDr "$timeDr"
     } else {
-        set tmpMostPreviousTimeDr [clock scan $mostPreviousTimeDr]
-        set tmpTimeDr [clock scan $timeDr]
-
-        if {$tmpTimeDr < $tmpMostPreviousTimeDr} {
-            set mostPreviousTimeDr "$timeDr"
+	set tmpMostPreviousTimeDr [clock scan $mostPreviousTimeDr]
+	set tmpTimeDr [clock scan $timeDr]
+	
+	if {$tmpTimeDr < $tmpMostPreviousTimeDr} {
+	    set mostPreviousTimeDr "$timeDr"
         }
-
+	
     }
 }
 
@@ -315,18 +314,24 @@ if {$dataUnit == "N/A"} {
     append msg $msg " Pending Data size is unknown."
 }
 
-$PANACES_CLI_RETVAL setArgs "REPLICATION_DETAILS_EXIT_STATUS" "0"
-$PANACES_CLI_RETVAL setArgs "REPLICATION_DETAILS_OUTPUT" "$msg"
-$PANACES_CLI_RETVAL setArgs "REPLICATION_DETAILS_OUTPUT_TYPE" "Text"
 
-### Set remaining data lag
-$PANACES_CLI_RETVAL setArgs "REPLICATION_DETAILS_DATALAG" "$sumDataLag"
-$PANACES_CLI_RETVAL setArgs "REPLICATION_DETAILS_DATALAG_UNIT" "$dataUnit"
 
-### Send MirrorBreakTime of both servers to RO server
-### RPO = PR_TIMESTAMP - DR_TIMESTAMP
-$PANACES_CLI_RETVAL setArgs "DR_TIMESTAMP" "$mostPreviousTimeDr"
-$PANACES_CLI_RETVAL setArgs "TIMESTAMP_FORMAT" "yyyy-MM-dd HH:mm:ss"
-$PANACES_CLI_RETVAL setArgs "PR_TIMESTAMP" "$timePr"
+set clockPr [clock scan $timePr]
+set clockDr [clock scan $timeDr]
+set rpo [expr $clockPr - $clockDr]
+set hour [expr $rpo / 3600]
+set rpo [expr $rpo - $hour * 3600]
+set minute [expr $rpo / 60]
+set rpo [expr $rpo - $minute * 60]
 
-set successExitCode 0
+set TCL_OUTPUT {}
+
+append TCL_OUTPUT "Status : $msg\n"
+append TCL_OUTPUT "RPO    : $hour h:$minute m:$rpo s\n"
+if {$dataUnit == "N/A"} {
+    append TCL_OUTPUT "DataLag: $dataUnit\n"
+} else {
+    append TCL_OUTPUT "DataLag: $sumDataLag $dataUnit\n\n"
+}
+
+$PANACES_CLI_RETVAL setArgs "TCL_OUTPUT" "$TCL_OUTPUT"
